@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  height    Float?   // altura em cm
+  weight    Float?   // peso atual em kg
+  goal      String?  // objetivo do usuário
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  trainings  Training[]
+  meals      Meal[]
+  waterLogs  WaterLog[]
+  weights    Weight[]
+
+  @@map("users")
+}
+
+model Training {
+  id     String      @id @default(cuid())
+  userId String
+  type   TrainingType
+  date   DateTime
+  notes  String?
+  
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises Exercise[]
+  runs      Run[]
+
+  @@map("trainings")
+}
+
+model Exercise {
+  id         String  @id @default(cuid())
+  trainingId String
+  name       String
+  sets       Int
+  reps       Int
+  weight     Float?  // peso em kg
+  notes      String?
+
+  training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@map("exercises")
+}
+
+model Run {
+  id         String  @id @default(cuid())
+  trainingId String
+  distance   Float   // distância em km
+  duration   Int     // duração em segundos
+  pace       String? // pace calculado
+  notes      String?
+
+  training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@map("runs")
+}
+
+model Meal {
+  id       String   @id @default(cuid())
+  userId   String
+  date     DateTime
+  type     MealType
+  calories Int?
+  carbs    Float?   // carboidratos em g
+  protein  Float?   // proteína em g
+  fat      Float?   // gordura em g
+  notes    String?
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foods Food[]
+
+  @@map("meals")
+}
+
+model Food {
+  id       String @id @default(cuid())
+  mealId   String
+  name     String
+  quantity Float  // quantidade
+  unit     String // unidade (g, ml, unidade)
+  calories Int
+  carbs    Float? // carboidratos em g
+  protein  Float? // proteína em g
+  fat      Float? // gordura em g
+
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@map("foods")
+}
+
+model WaterLog {
+  id     String   @id @default(cuid())
+  userId String
+  date   DateTime
+  amount Int      // quantidade em ml
+  goal   Int      // meta diária em ml
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("water_logs")
+}
+
+model Weight {
+  id     String   @id @default(cuid())
+  userId String
+  date   DateTime
+  weight Float    // peso em kg
+  bmi    Float?   // IMC calculado
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("weights")
+}
+
+enum TrainingType {
+  MUSCULACAO
+  CORRIDA
+  OUTROS
+}
+
+enum MealType {
+  CAFE_MANHA
+  ALMOCO
+  LANCHE
+  JANTAR
+  CEIA
+}
