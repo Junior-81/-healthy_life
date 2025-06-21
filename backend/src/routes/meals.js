@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const { authenticateToken } = require('../middlewares/auth');
 const {
   getMeals,
   createMeal,
@@ -11,21 +11,21 @@ const {
 } = require('../controllers/mealController');
 
 // GET /api/meals - Listar refeições do usuário
-router.get('/', auth, getMeals);
+router.get('/', authenticateToken, getMeals);
 
 // POST /api/meals - Criar nova refeição
-router.post('/', auth, createMeal);
+router.post('/', authenticateToken, createMeal);
 
 // GET /api/meals/daily-nutrition - Obter totais nutricionais do dia
-router.get('/daily-nutrition', auth, getDailyNutrition);
+router.get('/daily-nutrition', authenticateToken, getDailyNutrition);
 
 // GET /api/meals/:id - Obter refeição específica
-router.get('/:id', auth, getMeal);
+router.get('/:id', authenticateToken, getMeal);
 
 // PUT /api/meals/:id - Atualizar refeição
-router.put('/:id', auth, updateMeal);
+router.put('/:id', authenticateToken, updateMeal);
 
 // DELETE /api/meals/:id - Deletar refeição
-router.delete('/:id', auth, deleteMeal);
+router.delete('/:id', authenticateToken, deleteMeal);
 
 module.exports = router;

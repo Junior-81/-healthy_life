@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const { authenticateToken } = require('../middlewares/auth');
 const {
   getWeights,
   addWeight,
@@ -12,24 +12,24 @@ const {
 } = require('../controllers/weightController');
 
 // GET /api/weights - Listar registros de peso
-router.get('/', auth, getWeights);
+router.get('/', authenticateToken, getWeights);
 
 // POST /api/weights - Adicionar novo peso
-router.post('/', auth, addWeight);
+router.post('/', authenticateToken, addWeight);
 
 // GET /api/weights/latest - Obter último peso registrado
-router.get('/latest', auth, getLatestWeight);
+router.get('/latest', authenticateToken, getLatestWeight);
 
 // GET /api/weights/stats - Obter estatísticas de peso
-router.get('/stats', auth, getWeightStats);
+router.get('/stats', authenticateToken, getWeightStats);
 
 // GET /api/weights/:id - Obter peso específico
-router.get('/:id', auth, getWeight);
+router.get('/:id', authenticateToken, getWeight);
 
 // PUT /api/weights/:id - Atualizar peso
-router.put('/:id', auth, updateWeight);
+router.put('/:id', authenticateToken, updateWeight);
 
 // DELETE /api/weights/:id - Deletar peso
-router.delete('/:id', auth, deleteWeight);
+router.delete('/:id', authenticateToken, deleteWeight);
 
 module.exports = router;

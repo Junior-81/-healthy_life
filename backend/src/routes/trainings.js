@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const { authenticateToken } = require('../middlewares/auth');
 const {
   getTrainings,
   createTraining,
@@ -10,18 +10,18 @@ const {
 } = require('../controllers/trainingController');
 
 // GET /api/trainings - Listar treinos do usuário
-router.get('/', auth, getTrainings);
+router.get('/', authenticateToken, getTrainings);
 
 // POST /api/trainings - Criar novo treino
-router.post('/', auth, createTraining);
+router.post('/', authenticateToken, createTraining);
 
 // GET /api/trainings/:id - Obter treino específico
-router.get('/:id', auth, getTraining);
+router.get('/:id', authenticateToken, getTraining);
 
 // PUT /api/trainings/:id - Atualizar treino
-router.put('/:id', auth, updateTraining);
+router.put('/:id', authenticateToken, updateTraining);
 
 // DELETE /api/trainings/:id - Deletar treino
-router.delete('/:id', auth, deleteTraining);
+router.delete('/:id', authenticateToken, deleteTraining);
 
 module.exports = router;
