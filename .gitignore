@@ -49,6 +49,17 @@ next-env.d.ts
 prisma/migrations/
 !prisma/migrations/.gitkeep
 
+# Database files
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+
+# Next.js additional files
+frontend/.next/trace
+frontend/.next/**/*.trace
+**/.next/trace
+
 # IDE
 .vscode/
 .idea/
