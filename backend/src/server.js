@@ -48,6 +48,7 @@ app.use('/api/trainings', trainingRoutes);
 app.use('/api/meals', mealRoutes);
 app.use('/api/water', waterRoutes);
 app.use('/api/weights', weightRoutes);
+app.use('/api/metabolism', require('./routes/metabolism'));
 
 // Health check
 app.get('/api/health', (req, res) => {

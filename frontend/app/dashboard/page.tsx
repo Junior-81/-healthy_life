@@ -12,6 +12,8 @@ interface User {
   goal?: string;
 }
 
+import Navbar from '../components/Navbar';
+
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,180 +77,232 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900">Healthy Life</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Olá, {user.name}!</span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                Sair
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg p-6">
-            
-            {/* Welcome Section */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Bem-vindo ao seu Dashboard!
-              </h2>
-              <p className="text-gray-600">
-                Aqui você pode acompanhar seu progresso e gerenciar sua jornada de saúde.
+
+          {/* Welcome Section */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Bem-vindo ao Healthy Life! 👋
+            </h2>
+            <p className="text-xl text-gray-600">
+              Sua plataforma completa para acompanhar saúde, treinos e nutrição.
+            </p>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* Perfil Card */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">
+                        Perfil
+                      </dt>
+                      <dd className="text-lg font-medium text-gray-900">
+                        {user.name}
+                      </dd>
+                      <dd className="text-sm text-gray-500">
+                        {user.email}
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dados Físicos Card */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">📏</span>
+                    </div>
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">
+                        Dados Físicos
+                      </dt>
+                      <dd className="text-lg font-medium text-gray-900">
+                        {user.height ? `${user.height} cm` : 'Não informado'}
+                      </dd>
+                      <dd className="text-sm text-gray-500">
+                        {user.weight ? `${user.weight} kg` : 'Peso não informado'}
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* IMC Card */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">📊</span>
+                    </div>
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">
+                        IMC
+                      </dt>
+                      <dd className="text-lg font-medium text-gray-900">
+                        {bmi || 'Não calculado'}
+                      </dd>
+                      {bmiStatus && (
+                        <dd className={`text-sm font-medium ${bmiStatus.color}`}>
+                          {bmiStatus.text}
+                        </dd>
+                      )}
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Objetivo */}
+          {user.goal && (
+            <div className="bg-white shadow rounded-lg p-6 mb-8">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Seu Objetivo
+              </h3>
+              <p className="text-gray-600 capitalize">
+                {user.goal.replace('_', ' ')}
               </p>
             </div>
+          )}
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {/* Perfil Card */}
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="p-5">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">
-                          {user.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-gray-500 truncate">
-                          Perfil
-                        </dt>
-                        <dd className="text-lg font-medium text-gray-900">
-                          {user.name}
-                        </dd>
-                        <dd className="text-sm text-gray-500">
-                          {user.email}
-                        </dd>
-                      </dl>
-                    </div>
-                  </div>
+          {/* O que você pode fazer no Healthy Life */}
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              O que você pode fazer no Healthy Life
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              {/* Card Metabolismo */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">🧬</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Cálculo Metabólico</h4>
                 </div>
-              </div>
-
-              {/* Dados Físicos Card */}
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="p-5">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">📏</span>
-                      </div>
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-gray-500 truncate">
-                          Dados Físicos
-                        </dt>
-                        <dd className="text-lg font-medium text-gray-900">
-                          {user.height ? `${user.height} cm` : 'Não informado'}
-                        </dd>
-                        <dd className="text-sm text-gray-500">
-                          {user.weight ? `${user.weight} kg` : 'Peso não informado'}
-                        </dd>
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* IMC Card */}
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="p-5">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">📊</span>
-                      </div>
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-gray-500 truncate">
-                          IMC
-                        </dt>
-                        <dd className="text-lg font-medium text-gray-900">
-                          {bmi || 'Não calculado'}
-                        </dd>
-                        {bmiStatus && (
-                          <dd className={`text-sm font-medium ${bmiStatus.color}`}>
-                            {bmiStatus.text}
-                          </dd>
-                        )}
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Objetivo */}
-            {user.goal && (
-              <div className="bg-white shadow rounded-lg p-6 mb-8">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Seu Objetivo
-                </h3>
-                <p className="text-gray-600 capitalize">
-                  {user.goal.replace('_', ' ')}
+                <p className="text-gray-600 mb-4">
+                  Calcule sua Taxa Metabólica Basal (TMB), gasto energético total e receba
+                  recomendações personalizadas de macronutrientes e água baseadas no seu objetivo.
                 </p>
+                <div className="text-sm text-purple-600 font-medium">
+                  ✓ TMB e TDEE personalizados ✓ Recomendações de macros ✓ Meta de hidratação
+                </div>
               </div>
-            )}
 
-            {/* Quick Actions */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Ações Rápidas
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg text-center transition-colors">
-                  <div className="text-2xl mb-2">🏋️</div>
-                  <div className="text-sm font-medium">Treinos</div>
-                </button>
-                
-                <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg text-center transition-colors">
-                  <div className="text-2xl mb-2">🍎</div>
-                  <div className="text-sm font-medium">Refeições</div>
-                </button>
-                
-                <button className="bg-cyan-500 hover:bg-cyan-600 text-white p-4 rounded-lg text-center transition-colors">
-                  <div className="text-2xl mb-2">💧</div>
-                  <div className="text-sm font-medium">Água</div>
-                </button>
-                
-                <button className="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg text-center transition-colors">
-                  <div className="text-2xl mb-2">⚖️</div>
-                  <div className="text-sm font-medium">Peso</div>
-                </button>
-              </div>
-            </div>
-
-            {/* Coming Soon */}
-            <div className="mt-8 text-center">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h4 className="text-lg font-medium text-yellow-800 mb-2">
-                  🚀 Em desenvolvimento
-                </h4>
-                <p className="text-yellow-700">
-                  Novas funcionalidades estarão disponíveis em breve: gráficos de progresso, 
-                  registros detalhados e muito mais!
+              {/* Card Treinos */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">🏋️</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Treinos</h4>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Acesse dicas e orientações para treinos de musculação e corrida.
+                  Organize sua rotina de exercícios e acompanhe seu progresso físico.
                 </p>
+                <div className="text-sm text-blue-600 font-medium">
+                  ✓ Dicas de musculação ✓ Planos de corrida ✓ Técnicas básicas
+                </div>
               </div>
-            </div>
 
+              {/* Card Perfil */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">👤</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Perfil</h4>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Gerencie seus dados pessoais, atualize informações físicas e
+                  registre medições corporais para acompanhar sua evolução.
+                </p>
+                <div className="text-sm text-indigo-600 font-medium">
+                  ✓ Dados pessoais ✓ Medições corporais ✓ Histórico de progresso
+                </div>
+              </div>
+
+              {/* Card Refeições */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">🍎</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Refeições</h4>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Registre suas refeições diárias, acompanhe o consumo de calorias e
+                  monitore se está seguindo as recomendações nutricionais.
+                </p>
+                <div className="text-sm text-green-600 font-medium">
+                  ✓ Registro de refeições ✓ Contagem de calorias ✓ Histórico nutricional
+                </div>
+              </div>
+
+              {/* Card Água */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">💧</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Hidratação</h4>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Monitore seu consumo diário de água, receba lembretes de hidratação e
+                  acompanhe se está atingindo sua meta personalizada.
+                </p>
+                <div className="text-sm text-cyan-600 font-medium">
+                  ✓ Meta de hidratação ✓ Registro diário ✓ Lembretes automáticos
+                </div>
+              </div>
+
+              {/* Card Peso */}
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-3">⚖️</div>
+                  <h4 className="text-xl font-semibold text-gray-900">Controle de Peso</h4>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Registre seu peso regularmente, visualize gráficos de evolução e
+                  acompanhe seu progresso em direção ao objetivo estabelecido.
+                </p>
+                <div className="text-sm text-orange-600 font-medium">
+                  ✓ Registro de peso ✓ Gráficos de evolução ✓ Análise de progresso
+                </div>
+              </div>
+
+            </div>
           </div>
+
+          {/* Coming Soon */}
+          <div className="mt-8 text-center">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-yellow-800 mb-2">
+                🚀 Em desenvolvimento
+              </h4>
+              <p className="text-yellow-700">
+                Novas funcionalidades estarão disponíveis em breve: gráficos de progresso,
+                registros detalhados e muito mais!
+              </p>
+            </div>
+          </div>
+
         </div>
       </main>
     </div>

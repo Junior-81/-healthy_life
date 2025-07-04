@@ -22,10 +22,11 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relacionamentos
-  trainings  Training[]
-  meals      Meal[]
-  waterLogs  WaterLog[]
-  weights    Weight[]
+  trainings         Training[]
+  meals             Meal[]
+  waterLogs         WaterLog[]
+  weights           Weight[]
+  bodyMeasurements  BodyMeasurement[]
 
   @@map("users")
 }
@@ -126,6 +127,22 @@ model Weight {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("weights")
+}
+
+model BodyMeasurement {
+  id     String   @id @default(cuid())
+  userId String
+  date   DateTime @default(now())
+  weight Float?   // peso em kg
+  chest  Float?   // peito/busto em cm
+  waist  Float?   // cintura em cm
+  hip    Float?   // quadril em cm
+  arm    Float?   // braço em cm
+  thigh  Float?   // coxa em cm
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("body_measurements")
 }
 
 enum TrainingType {
