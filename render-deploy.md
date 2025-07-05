@@ -1,22 +1,20 @@
 # Instruções para corrigir erro no Render
 
-## 🚨 ERRO: Service Root Directory "/opt/render/project/src/backend" is missing
+## 🚨 ERRO: Script postinstall na raiz tentando executar Prisma
 
-### ✅ SOLUÇÃO FINAL (problema do postinstall corrigido):
+### ✅ NOVA CORREÇÃO APLICADA:
 
-**No painel do Render, configure exatamente assim:**
+**PROBLEMA ENCONTRADO:** O `package.json` da raiz tinha um script `postinstall` tentando executar `npx prisma generate`, mas o Prisma só está instalado na pasta `backend`.
+
+**CORREÇÃO:** Removido o script `postinstall` do `package.json` da raiz.
+
+### CONFIGURAÇÃO FINAL CORRIGIDA:
 
 1. **Repository**: Seu repositório GitHub
-2. **Root Directory**: (deixar completamente vazio)
-3. **Build Command**: `npm install --prefix backend && npx prisma generate --schema=prisma/schema.prisma`
-4. **Start Command**: `cd backend && npm start`
+2. **Root Directory**: `backend` (⚠️ SEM ESPAÇO NO FINAL!)
+3. **Build Command**: `npm install && npx prisma generate --schema=../prisma/schema.prisma`
+4. **Start Command**: `npm start`
 5. **Environment**: Node.js
-
-### ALTERNATIVA MAIS SIMPLES (agora que removemos o postinstall):
-
-1. **Root Directory**: `backend` 
-2. **Build Command**: `npm install && npx prisma generate --schema=../prisma/schema.prisma`
-3. **Start Command**: `npm start`
 
 ### Variáveis de Ambiente (OBRIGATÓRIAS):
 ```
@@ -33,17 +31,20 @@ NODE_ENV=production
 - [ ] Todas as variáveis de ambiente adicionadas
 - [ ] Repositório atualizado no GitHub
 
-### 🚨 PROBLEMA RESOLVIDO:
-O erro `ENOENT: no such file or directory, copyfile` estava acontecendo porque o script `postinstall` no backend/package.json estava executando o Prisma generate duas vezes, causando conflito.
+### 🚨 PROBLEMA ATUAL RESOLVIDO:
+O erro `sh: 1: prisma: not found` no script `postinstall` acontecia porque o `package.json` da raiz tentava executar `npx prisma generate`, mas o Prisma só está instalado na pasta `backend`.
 
 **✅ CORREÇÃO APLICADA:**
-- Removido o script `postinstall` do backend/package.json
-- Agora o Prisma generate executa apenas uma vez no build command
+- Removido o script `postinstall` do `package.json` da raiz
+- Agora o Prisma generate só executa uma vez, no lugar correto
+- Commit enviado para o GitHub
 
-**CONFIGURAÇÃO RECOMENDADA ATUALIZADA:**
-- Root Directory: (vazio)
-- Build Command: `npm install --prefix backend && npx prisma generate --schema=prisma/schema.prisma`
-- Start Command: `cd backend && npm start`
+**CONFIGURAÇÃO TESTADA E CORRIGIDA:**
+- Root Directory: `backend`
+- Build Command: `npm install && npx prisma generate --schema=../prisma/schema.prisma`
+- Start Command: `npm start`
+
+**🚀 AGORA DEVE FUNCIONAR! Faça o redeploy no Render.**
 
 ### Se ainda der erro:
 1. Tente deletar o serviço e criar novo
