@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "build": "echo 'Backend build completed'",
-    "seed": "node src/utils/seed.js"
+    "build": "npx prisma generate --schema=../prisma/schema.prisma && echo 'Backend build completed'",
+    "seed": "node ../prisma/seed.js",
+    "db:deploy": "npx prisma db push --schema=../prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --schema=../prisma/schema.prisma",
+    "db:generate": "npx prisma generate --schema=../prisma/schema.prisma",
+    "postinstall": "npx prisma generate --schema=../prisma/schema.prisma"
   },
   "dependencies": {
     "express": "^4.18.2",

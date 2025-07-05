@@ -6,12 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  
 }
 
+
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   email     String   @unique
   name      String
   password  String
@@ -32,7 +33,7 @@ model User {
 }
 
 model Training {
-  id     String      @id @default(cuid())
+  id     String      @id @default(uuid())
   userId String
   type   TrainingType
   date   DateTime
@@ -46,7 +47,7 @@ model Training {
 }
 
 model Exercise {
-  id         String  @id @default(cuid())
+  id         String  @id @default(uuid())
   trainingId String
   name       String
   sets       Int
@@ -60,7 +61,7 @@ model Exercise {
 }
 
 model Run {
-  id         String  @id @default(cuid())
+  id         String  @id @default(uuid())
   trainingId String
   distance   Float   // distância em km
   duration   Int     // duração em segundos
@@ -73,7 +74,7 @@ model Run {
 }
 
 model Meal {
-  id       String   @id @default(cuid())
+  id       String   @id @default(uuid())
   userId   String
   date     DateTime
   type     MealType
@@ -90,7 +91,7 @@ model Meal {
 }
 
 model Food {
-  id       String @id @default(cuid())
+  id       String @id @default(uuid())
   mealId   String
   name     String
   quantity Float  // quantidade
@@ -106,7 +107,7 @@ model Food {
 }
 
 model WaterLog {
-  id     String   @id @default(cuid())
+  id     String   @id @default(uuid())
   userId String
   date   DateTime
   amount Int      // quantidade em ml
@@ -118,7 +119,7 @@ model WaterLog {
 }
 
 model Weight {
-  id     String   @id @default(cuid())
+  id     String   @id @default(uuid())
   userId String
   date   DateTime
   weight Float    // peso em kg
@@ -130,7 +131,7 @@ model Weight {
 }
 
 model BodyMeasurement {
-  id     String   @id @default(cuid())
+  id     String   @id @default(uuid())
   userId String
   date   DateTime @default(now())
   weight Float?   // peso em kg
