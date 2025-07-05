@@ -6,9 +6,9 @@ const getTrainings = async (req, res) => {
   try {
     const userId = req.user.id;
     const { page = 1, limit = 10, type } = req.query;
-    
+
     const skip = (page - 1) * limit;
-    
+
     const where = { userId };
     if (type) {
       where.type = type;

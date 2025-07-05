@@ -6,15 +6,15 @@ const getMeals = async (req, res) => {
   try {
     const userId = req.user.id;
     const { date, page = 1, limit = 10 } = req.query;
-    
+
     const skip = (page - 1) * limit;
-    
+
     const where = { userId };
     if (date) {
       const startDate = new Date(date);
       const endDate = new Date(date);
       endDate.setDate(endDate.getDate() + 1);
-      
+
       where.date = {
         gte: startDate,
         lt: endDate
@@ -165,7 +165,7 @@ const updateMeal = async (req, res) => {
 
     // Recalcular totais se alimentos fornecidos
     let updateData = { updatedAt: new Date() };
-    
+
     if (foods) {
       let totalCalories = 0;
       let totalProteins = 0;

@@ -6,15 +6,15 @@ const getWaterLogs = async (req, res) => {
   try {
     const userId = req.user.id;
     const { date, page = 1, limit = 30 } = req.query;
-    
+
     const skip = (page - 1) * limit;
-    
+
     const where = { userId };
     if (date) {
       const startDate = new Date(date);
       const endDate = new Date(date);
       endDate.setDate(endDate.getDate() + 1);
-      
+
       where.date = {
         gte: startDate,
         lt: endDate
@@ -107,7 +107,7 @@ const getDailyWaterIntake = async (req, res) => {
     const { date } = req.query;
 
     const waterDate = date ? new Date(date) : new Date();
-    
+
     const startDate = new Date(waterDate);
     startDate.setHours(0, 0, 0, 0);
     const endDate = new Date(waterDate);

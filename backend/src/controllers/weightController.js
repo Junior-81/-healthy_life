@@ -6,7 +6,7 @@ const getWeights = async (req, res) => {
   try {
     const userId = req.user.id;
     const { page = 1, limit = 30 } = req.query;
-    
+
     const skip = (page - 1) * limit;
 
     const weights = await prisma.weight.findMany({
@@ -220,8 +220,8 @@ const getWeightStats = async (req, res) => {
     const minWeight = Math.min(...weights.map(w => w.weight));
     const maxWeight = Math.max(...weights.map(w => w.weight));
 
-    const imcChange = (currentWeight.imc && initialWeight.imc) 
-      ? currentWeight.imc - initialWeight.imc 
+    const imcChange = (currentWeight.imc && initialWeight.imc)
+      ? currentWeight.imc - initialWeight.imc
       : null;
 
     res.json({
