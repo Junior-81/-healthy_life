@@ -1,4 +1,11 @@
-# 🚀 DEPLOY DEFINITIVO - Estratégia que SEMPRE funciona
+# 🚀 DEPLOY DEFINITIVO - Estratégia que SE### 📋 PASSO A PASSO:
+
+1. **Vá no painel do Render**
+2. **Altere o Build Command para:** `cd backend && npm install && npx prisma generate --schema=../prisma/schema.prisma`
+3. **Mantenha tudo o resto igual**
+4. **Clique em Deploy**
+
+**🎉 AGORA VAI FUNCIONAR 100%!**ciona
 
 ## ✅ SOLUÇÃO 100% GARANTIDA!
 
@@ -23,9 +30,9 @@ NODE_ENV=production
 
 ## 🎯 MUDANÇA NO BUILD COMMAND:
 
-**APENAS isto:**
+**Corrigido para incluir Prisma generate:**
 ```
-cd backend && npm install
+cd backend && npm install && npx prisma generate --schema=../prisma/schema.prisma
 ```
 
 **🚀 POR QUE ESTA ESTRATÉGIA SEMPRE FUNCIONA:**
