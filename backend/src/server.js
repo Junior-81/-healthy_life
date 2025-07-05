@@ -44,14 +44,21 @@ const weightRoutes = require('./routes/weights');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000; // Render usa porta dinâmica
+
+console.log(`🔧 Configurando servidor na porta: ${PORT}`);
+console.log(`📍 Variáveis de ambiente carregadas:`, {
+  NODE_ENV: process.env.NODE_ENV,
+  PORT: process.env.PORT,
+  DATABASE_URL: process.env.DATABASE_URL ? '✅ Definida' : '❌ Não definida'
+});
 
 // Middlewares de segurança
 app.use(helmet());
 
-// Configuração CORS mais permissiva para desenvolvimento
+// Configuração CORS
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002'],
+  origin: process.env.NODE_ENV === 'production' ? true : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
@@ -93,8 +100,22 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Rota não encontrada' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Host: 0.0.0.0:${PORT}`);
+  console.log(`✅ Servidor pronto para receber conexões`);
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('❌ Erro no servidor:', error);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🔄 Encerrando servidor...');
+  server.close(() => {
+    console.log('✅ Servidor encerrado');
+  });
 });

@@ -27,18 +27,25 @@
 4. **Start Command**: `cd backend && npm start`
 5. **Environment**: Node.js
 
-### Variáveis de Ambiente (apenas estas 4):
+### Variáveis de Ambiente (OBRIGATÓRIAS):
 ```
 DATABASE_URL=postgresql://bd_healthy_life_user:xqE0W1xc7nRQR7nqgube2aIorFRM2Ilj@dpg-d1jikcili9vc738a7o30-a.ohio-postgres.render.com/bd_healthy_life
 JWT_SECRET=seu_jwt_secret_muito_secreto_aqui_123456
-PORT=3001
 NODE_ENV=production
 ```
 
-## 🎯 CORREÇÃO APLICADA:
+**⚠️ IMPORTANTE:** NÃO defina a variável PORT no Render! O Render define automaticamente.
+
+## 🎯 CORREÇÕES APLICADAS:
 
 **Problema:** Render não detectava porta aberta  
-**Solução:** Servidor agora escuta em `0.0.0.0` (obrigatório no Render)
+**Soluções aplicadas:**
+1. **Porta dinâmica:** Agora usa `process.env.PORT` (definida automaticamente pelo Render)
+2. **Logs detalhados:** Para diagnosticar problemas
+3. **CORS corrigido:** Aceita todas as origens em produção
+4. **Server binding melhorado:** Com tratamento de erros
+
+**⚠️ REMOVA a variável PORT das Environment Variables se estiver definida!**
 
 **🚀 POR QUE ESTA ESTRATÉGIA SEMPRE FUNCIONA:**
 - ✅ Build super rápido (só npm install)
