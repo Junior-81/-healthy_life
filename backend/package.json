@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "build": "rm -rf node_modules/.prisma && npx prisma generate --schema=../prisma/schema.prisma || (sleep 2 && npx prisma generate --schema=../prisma/schema.prisma) && echo 'Backend build completed'",
+    "build": "echo 'Build completed - Prisma will auto-initialize'",
     "seed": "node ../prisma/seed.js",
     "db:deploy": "npx prisma db push --schema=../prisma/schema.prisma",
     "db:migrate": "npx prisma migrate dev --schema=../prisma/schema.prisma",

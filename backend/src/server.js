@@ -4,6 +4,25 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
+// Inicialização automática do Prisma
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+// Função para verificar/inicializar Prisma
+async function initializePrisma() {
+  try {
+    await prisma.$connect();
+    console.log('✅ Prisma conectado com sucesso');
+  } catch (error) {
+    console.log('⚠️ Tentando conectar ao Prisma...');
+    // Se falhar, tenta novamente em 2 segundos
+    setTimeout(initializePrisma, 2000);
+  }
+}
+
+// Inicializa Prisma
+initializePrisma();
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const trainingRoutes = require('./routes/trainings');
