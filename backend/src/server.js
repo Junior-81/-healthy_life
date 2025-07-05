@@ -4,24 +4,35 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-// Inicialização automática do Prisma
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-// Função para verificar/inicializar Prisma
-async function initializePrisma() {
+// Inicialização do Prisma com tratamento de erro
+let prisma;
+async function initPrisma() {
   try {
+    const { PrismaClient } = require('@prisma/client');
+    prisma = new PrismaClient();
     await prisma.$connect();
     console.log('✅ Prisma conectado com sucesso');
+    return true;
   } catch (error) {
-    console.log('⚠️ Tentando conectar ao Prisma...');
-    // Se falhar, tenta novamente em 2 segundos
-    setTimeout(initializePrisma, 2000);
+    console.log('⚠️ Prisma não inicializado ainda, tentando novamente...');
+    return false;
   }
 }
 
-// Inicializa Prisma
-initializePrisma();
+// Middleware para inicializar Prisma sob demanda
+async function ensurePrisma(req, res, next) {
+  if (!prisma) {
+    const success = await initPrisma();
+    if (!success) {
+      return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+    }
+  }
+  req.prisma = prisma;
+  next();
+}
+
+// Exportar função para usar nas rotas
+global.getPrisma = () => prisma;
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
@@ -60,14 +71,14 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Rotas
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/trainings', trainingRoutes);
-app.use('/api/meals', mealRoutes);
-app.use('/api/water', waterRoutes);
-app.use('/api/weights', weightRoutes);
-app.use('/api/metabolism', require('./routes/metabolism'));
+// Rotas com middleware de Prisma
+app.use('/api/auth', ensurePrisma, authRoutes);
+app.use('/api/users', ensurePrisma, userRoutes);
+app.use('/api/trainings', ensurePrisma, trainingRoutes);
+app.use('/api/meals', ensurePrisma, mealRoutes);
+app.use('/api/water', ensurePrisma, waterRoutes);
+app.use('/api/weights', ensurePrisma, weightRoutes);
+app.use('/api/metabolism', ensurePrisma, require('./routes/metabolism'));
 
 // Health check
 app.get('/api/health', (req, res) => {
