@@ -21,8 +21,7 @@
     "db:generate": "npx prisma generate",
     "db:studio": "npx prisma studio",
     "db:seed": "node prisma/seed.js",
-    "db:push": "npx prisma db push",
-    "postinstall": "npx prisma generate"
+    "db:push": "npx prisma db push"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
