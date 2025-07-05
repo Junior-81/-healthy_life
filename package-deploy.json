@@ -1,0 +1,17 @@
+{
+    "name": "healthy-life-backend-deploy",
+    "version": "1.0.0",
+    "description": "Deploy configuration for Healthy Life backend",
+    "scripts": {
+        "build": "cd backend && npm install && npx prisma generate --schema=../prisma/schema.prisma",
+        "start": "cd backend && npm start",
+        "postinstall": "cd backend && npm install"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.10.1",
+        "prisma": "^6.10.1"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -8,10 +8,24 @@
 ## 🗄️ Deploy do Backend (Render)
 
 ### 1. Configurar no painel da Render:
-- **Build Command**: `cd backend && npm install && npm run build`
+
+**Opção A - Configuração Simples:**
+- **Repository**: Conectar seu GitHub
+- **Root Directory**: `backend` (definir o backend como diretório raiz)
+- **Build Command**: `npm install && npx prisma generate --schema=../prisma/schema.prisma`
+- **Start Command**: `npm start`
+- **Environment**: Node.js
+
+**Opção B - Se a Opção A não funcionar:**
+- **Root Directory**: deixar vazio (raiz do projeto)
+- **Build Command**: `npm install && cd backend && npm install && npx prisma generate --schema=../prisma/schema.prisma`
 - **Start Command**: `cd backend && npm start`
 - **Environment**: Node.js
-- **Region**: Ohio (mesmo do banco)
+
+**Opção C - Usando scripts (se as anteriores falharem):**
+- **Root Directory**: deixar vazio
+- **Build Command**: `chmod +x build.sh && ./build.sh`
+- **Start Command**: `chmod +x start.sh && ./start.sh`
 
 ### 2. Variáveis de ambiente no Render:
 ```
