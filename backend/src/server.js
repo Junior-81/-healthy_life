@@ -2,7 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
+
+// Carregar variáveis de ambiente (backend + raiz)
 require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 // Inicialização do Prisma com tratamento de erro
 let prisma;
@@ -58,11 +62,37 @@ app.use(helmet());
 
 // Configuração CORS
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? true : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002'],
+  origin: function (origin, callback) {
+    // Permitir requests sem origin (ex: mobile apps)
+    if (!origin) return callback(null, true);
+
+    // Em produção, permitir todas as origens
+    if (process.env.NODE_ENV === 'production') {
+      return callback(null, true);
+    }
+
+    // Em desenvolvimento, permitir localhost em várias portas
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      'http://127.0.0.1:3002'
+    ];
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+
+    console.log('CORS bloqueado para origem:', origin);
+    return callback(null, false);
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
-  optionsSuccessStatus: 200
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with', 'Origin', 'Accept'],
+  optionsSuccessStatus: 200,
+  preflightContinue: false
 };
 
 app.use(cors(corsOptions));
