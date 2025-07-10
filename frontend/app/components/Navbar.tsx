@@ -25,9 +25,8 @@ export default function Navbar() {
         { name: 'Perfil', href: '/profile', icon: '👤' },
         { name: 'Metabolismo', href: '/metabolism', icon: '🧬' },
         { name: 'Treinos', href: '/trainings', icon: '🏋️' },
-        { name: 'Refeições', href: '/meals', icon: '🍎' },
-        { name: 'Água', href: '/water', icon: '💧' },
-        { name: 'Peso', href: '/weight', icon: '⚖️' }
+        { name: 'Refeições', href: '/meals', icon: '�️' },
+        { name: 'Água', href: '/water', icon: '💧' }
     ];
 
     const isActive = (href: string) => pathname === href;
@@ -50,8 +49,8 @@ export default function Navbar() {
                                 key={item.name}
                                 onClick={() => router.push(item.href)}
                                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-2 ${isActive(item.href)
-                                        ? 'bg-indigo-100 text-indigo-700'
-                                        : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
+                                    ? 'bg-indigo-100 text-indigo-700'
+                                    : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
                                     }`}
                             >
                                 <span>{item.icon}</span>
@@ -82,8 +81,8 @@ export default function Navbar() {
                                 key={item.name}
                                 onClick={() => router.push(item.href)}
                                 className={`flex px-3 py-2 rounded-md text-base font-medium transition-colors w-full text-left items-center space-x-2 ${isActive(item.href)
-                                        ? 'bg-indigo-100 text-indigo-700'
-                                        : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
+                                    ? 'bg-indigo-100 text-indigo-700'
+                                    : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
                                     }`}
                             >
                                 <span>{item.icon}</span>

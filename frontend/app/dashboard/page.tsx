@@ -243,9 +243,12 @@ export default function DashboardPage() {
               </div>
 
               {/* Card Refeições */}
-              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+              <div
+                className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500 cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => router.push('/meals')}
+              >
                 <div className="flex items-center mb-4">
-                  <div className="text-3xl mr-3">🍎</div>
+                  <div className="text-3xl mr-3">�️</div>
                   <h4 className="text-xl font-semibold text-gray-900">Refeições</h4>
                 </div>
                 <p className="text-gray-600 mb-4">
@@ -258,7 +261,10 @@ export default function DashboardPage() {
               </div>
 
               {/* Card Água */}
-              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500">
+              <div
+                className="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500 cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => router.push('/water')}
+              >
                 <div className="flex items-center mb-4">
                   <div className="text-3xl mr-3">💧</div>
                   <h4 className="text-xl font-semibold text-gray-900">Hidratação</h4>
@@ -268,22 +274,7 @@ export default function DashboardPage() {
                   acompanhe se está atingindo sua meta personalizada.
                 </p>
                 <div className="text-sm text-cyan-600 font-medium">
-                  ✓ Meta de hidratação ✓ Registro diário ✓ Lembretes automáticos
-                </div>
-              </div>
-
-              {/* Card Peso */}
-              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
-                <div className="flex items-center mb-4">
-                  <div className="text-3xl mr-3">⚖️</div>
-                  <h4 className="text-xl font-semibold text-gray-900">Controle de Peso</h4>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  Registre seu peso regularmente, visualize gráficos de evolução e
-                  acompanhe seu progresso em direção ao objetivo estabelecido.
-                </p>
-                <div className="text-sm text-orange-600 font-medium">
-                  ✓ Registro de peso ✓ Gráficos de evolução ✓ Análise de progresso
+                  ✓ Meta de hidratação ✓ Registro diário ✓ Controle inteligente
                 </div>
               </div>
 
